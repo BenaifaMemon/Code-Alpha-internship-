@@ -1,0 +1,86 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <map>
+#include <vector>
+
+using namespace std;
+
+// Define a class for the chatbot
+class AdvancedChatBot {
+public:
+    // Function for processing user input and providing a response
+    void processInput(string input) {
+        // Normalize the input (convert to lowercase for simplicity)
+        string normalizedInput = toLowerCase(input);
+
+        // Dialogue management
+        if (checkSentiment(normalizedInput) == "positive") {
+            cout << "ChatBot: I'm glad you're feeling good! How can I help you further?" << endl;
+        } else if (checkSentiment(normalizedInput) == "negative") {
+            cout << "ChatBot: I'm sorry you're feeling down. How can I help you feel better?" << endl;
+        } else {
+            handleQuestions(normalizedInput);
+        }
+    }
+
+private:
+    // Convert input string to lowercase
+    string toLowerCase(string str) {
+        transform(str.begin(), str.end(), str.begin(), ::tolower);
+        return str;
+    }
+
+    // Simple sentiment analysis: checks if the input contains positive or negative words
+    string checkSentiment(string input) {
+        vector<string> positiveWords =  {"happy", "good", "great", "awesome", "fantastic"};
+        vector<string> negativeWords =  {"sad", "bad", "angry", "upset", "depressed"};
+        
+        for (const auto& word : positiveWords) {
+            if (input.find(word) != string::npos) {
+                return "positive";
+            }
+        }
+        for (const auto& word : negativeWords) {
+            if (input.find(word) != string::npos) 
+                return "negative";
+        }
+        return "neutral";
+    }
+
+    // Basic question answering using a simple keyword-based system
+    void handleQuestions(string input) {
+        if (input.find("your name") != string::npos) {
+            cout << "ChatBot: My name is C++ Bot. How can I assist you?" << endl;
+        } else if (input.find("how are you") != string::npos) {
+            cout << "ChatBot: I'm just a program, but I'm doing great. How are you?" << endl;
+        } else if (input.find("what is your purpose") != string::npos) {
+            cout << "ChatBot: My purpose is to assist you with any questions you have!" << endl;
+        } else {
+            cout << "ChatBot: Sorry, I didn't quite understand that. Can you ask something else?" << endl;
+        }
+    }
+};
+
+// Main function to interact with the chatbot
+int main() {
+    AdvancedChatBot chatbot;
+    string userInput;
+
+    cout << "Welcome to the Advanced ChatBot!" << endl;
+
+    // Start the conversation loop
+    while (true) {
+        cout << "You: ";
+        getline(cin, userInput);
+
+        if (userInput == "exit" || userInput == "bye") {
+            cout << "ChatBot: Goodbye! Have a great day!" << endl;
+            break;
+        }
+
+        chatbot.processInput(userInput);
+    }
+
+    return 0;
+}
